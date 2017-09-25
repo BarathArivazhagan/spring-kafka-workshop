@@ -1,10 +1,12 @@
 package com.barath.app;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
@@ -15,6 +17,16 @@ import java.util.Map;
  * Created by barath on 31/08/17.
  */
 public class KafkaProducerConfiguration {
+
+        @Bean
+        public KafkaAdmin admin(){
+            return new KafkaAdmin(producerConfigs());
+        }
+
+        @Bean
+        public NewTopic testTopic(){
+            return new NewTopic("test",10,(short)1);
+        }
 
 
 

@@ -29,7 +29,7 @@ public class MessagePublisher {
 	public void sendMessageToPartition1(String data) {
 		
 		logger.info("Partition {}  Data {}",0,data);
-		ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName, 0,data, data);
+		ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName, 0,"KEY-0", data);
 		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			
 			public void onSuccess(SendResult<String, String> result) {
@@ -49,7 +49,7 @@ public class MessagePublisher {
 		
 		logger.info("Partition {}  Data {}",1,data);
 			
-			ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName,1,data, data);
+			ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName,1,"KEY-1", data);
 			future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 				
 				public void onSuccess(SendResult<String, String> result) {
@@ -69,7 +69,7 @@ public class MessagePublisher {
 	public void sendMessageToPartition3(String data) {
 		
 		logger.info("Partition {}  Data {}",2,data);
-		ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName,2,data, data);
+		ListenableFuture<SendResult<String, String>> future=kafkaTemplate.send(topicName,2,"KEY-2", data);
 		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
 			
 			public void onSuccess(SendResult<String, String> result) {

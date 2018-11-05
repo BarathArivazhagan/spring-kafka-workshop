@@ -1,34 +1,37 @@
 package com.barath.app;
 
+import java.lang.invoke.MethodHandles;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import javax.xml.ws.ServiceMode;
 
 /**
  * Created by barath on 31/08/17.
  */
 @Service
 public class ProducerService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-   // @Value("${}")
+    @Value("${kafka.test.topic:test}")
     private String topic;
 
+    private  final KafkaTemplate<Integer,String> kafkaTemplate;
 
-    private  KafkaTemplate kafkaTemplate;
-
-    public ProducerService(KafkaTemplate kafkaTemplate){
+    public ProducerService(KafkaTemplate<Integer,String> kafkaTemplate){
         this.kafkaTemplate=kafkaTemplate;
     }
 
 
-    public void sendMessage(String message){
+    public void sendMessage(String message){    	
     	
-    	
-    	System.out.println("Producing the message "+message);
-        kafkaTemplate.send("test",message);
+    	logger.info("Producing the message{} ",message);
+        kafkaTemplate.send(topic,message);
     }
     
     @PostConstruct

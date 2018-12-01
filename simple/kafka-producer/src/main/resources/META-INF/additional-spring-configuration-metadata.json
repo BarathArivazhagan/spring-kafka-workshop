@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "kafka.topic.name",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.topic.name'"
+  },
+  {
+    "name": "order.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.topic'"
+  },
+  {
+    "name": "order.request.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.request.topic'"
+  },
+  {
+    "name": "order.reply.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.reply.topic'"
+  }
+]}

@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
@@ -164,7 +166,7 @@ public class KafkaConfiguration {
 	                  this.kafkaProperties.getConsumer().getGroupId());
 	          props.put(
 	                  ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-	                  Object.class);
+	                  LongDeserializer.class);
 	          props.put(
 	                  ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
 	                  StringDeserializer.class);
@@ -176,23 +178,36 @@ public class KafkaConfiguration {
 	    }
 	    
 	  	    
-	    
-	    @Bean
+	    /** enable below for single threaded listener container **/
+	   /** @Bean
 	    public KafkaMessageListenerContainer<Long, String> 
 	      orderResponseContainerFactory(@Value("${order.reply.topic}") String replyTopic) {
 	    	
 	    	ContainerProperties props = new ContainerProperties(replyTopic);
-	    	KafkaMessageListenerContainer<Long, String> factory
+	    	KafkaMessageListenerContainer<Long, String> container
 	          = new KafkaMessageListenerContainer<>(orderResponseConsumerFactory(),props);	         
-	        return factory;
+	        return container;
+	    } **/
+	    
+	    @Bean
+	    public ConcurrentMessageListenerContainer<Long, String> repliesContainer(
+	            ConcurrentKafkaListenerContainerFactory<Long, String> containerFactory) {
+
+	        ConcurrentMessageListenerContainer<Long, String> repliesContainer = 
+	                containerFactory.createContainer(this.ordersReplyTopic);
+	        repliesContainer.getContainerProperties().setGroupId("repliesGroup");
+	        repliesContainer.setAutoStartup(false);
+	        return repliesContainer;
 	    }
 
 	    
 	    /** use of replying kafka template to send and receive messages */
 	    @Bean
-	    public ReplyingKafkaTemplate<Long, Order, String> replyingKafkaTemplate(KafkaMessageListenerContainer<Long, String> orderResponseContainerFactory ){
+	    public ReplyingKafkaTemplate<Long, Order, String> replyingKafkaTemplate(ConcurrentMessageListenerContainer<Long, String> orderReplyContainer ){
 	    	
-	    	return new ReplyingKafkaTemplate<Long, Order, String>(orderProducerFactory(), orderResponseContainerFactory);
+	    	return new ReplyingKafkaTemplate<Long, Order, String>(orderProducerFactory(), orderReplyContainer);
 	    }
+	    	    
+	 
 	    
 }

@@ -26,16 +26,16 @@ public class OrderService {
 	
 	private final KafkaTemplate<Long, Order> kafkaTemplate;
 	
-	private final ReplyingKafkaTemplate<Long,Order,String> replyingKafkaTemplate;
+	private final ReplyingKafkaTemplate<Long,Order,Order> replyingKafkaTemplate;
 	
-	@Value("${order.topic: orders}")
-	private String orderTopic;
+	@Value("${kafka.order.topic.name:orders}")
+	private String orderTopicName;
 	
-	@Value("${order.request.topic}")
-	private String orderReqTopic;
+	@Value("${kafka.order.request.topic.name}")
+	private String orderReqTopicName;
 	
 	public OrderService(KafkaTemplate<Long, Order> orderKafkaTemplate, 
-			ReplyingKafkaTemplate<Long,Order,String> replyingKafkaTemplate) {
+			ReplyingKafkaTemplate<Long,Order,Order> replyingKafkaTemplate) {
 		this.kafkaTemplate= orderKafkaTemplate;
 		this.replyingKafkaTemplate=replyingKafkaTemplate;
 	}
@@ -44,7 +44,7 @@ public class OrderService {
 		
 		if(logger.isInfoEnabled()) { logger.info("publishing order {}",Objects.toString(order)); }
 		
-		ListenableFuture<SendResult<Long, Order>> result= this.kafkaTemplate.send(orderTopic, order.getOrderId(),order);
+		ListenableFuture<SendResult<Long, Order>> result= this.kafkaTemplate.send(orderTopicName, order.getOrderId(),order);
 		result.addCallback( (record) -> {
 			logger.info(" success in placing the order record {}",record.getProducerRecord().key());
 		}, (err) -> {
@@ -56,8 +56,8 @@ public class OrderService {
 	public void publishOrderWithReplyFuture(Order order) {
 		
 		
-		ProducerRecord<Long, Order> producer = new ProducerRecord<Long, Order>(orderReqTopic, order.getOrderId(), order);
-		RequestReplyFuture<Long,Order,String> reply= this.replyingKafkaTemplate.sendAndReceive(producer);
+		ProducerRecord<Long, Order> producer = new ProducerRecord<Long, Order>(orderReqTopicName, order.getOrderId(), order);
+		RequestReplyFuture<Long,Order,Order> reply= this.replyingKafkaTemplate.sendAndReceive(producer);
 		reply.addCallback((record) -> {
 			logger.info("success callback:: handle response key: {} value:{}",record.key(), record.value());
 		}, (error) -> {

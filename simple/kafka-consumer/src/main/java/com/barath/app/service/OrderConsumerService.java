@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 
 import com.barath.app.model.Order;
+import com.barath.app.model.Order.OrderStatus;
 
 @Service
 public class OrderConsumerService {
@@ -17,7 +18,7 @@ public class OrderConsumerService {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	
-	@KafkaListener(containerFactory="orderContainerFactory",topics= {"${order.topic}"})
+	@KafkaListener(containerFactory="orderContainerFactory",topics= {"${kafka.order.topic.name}"})
 	public void receiveOrder(Order order) {
 		
 		if(logger.isInfoEnabled()) {
@@ -26,15 +27,17 @@ public class OrderConsumerService {
 	}
 	
 	
-	@KafkaListener(containerFactory="orderReplyContainerFactory",topics= {"${order.request.topic}"})
-	@SendTo("${order.reply.topic}")
-	public String receiveOrderAndSendConfirmation(Order order) {
+	@KafkaListener(containerFactory="orderReplyContainerFactory",topics= {"${kafka.order.request.topic.name}"})
+	@SendTo("${kafka.order.reply.topic.name}")
+	public Order receiveOrderAndSendConfirmation(Order order) {
 		
 		if(logger.isInfoEnabled()) {
 			logger.info("order received and confirming response{}",Objects.toString(order));
+			logger.info("order received with order id {} successfully",order.getOrderId());
 		}
+		order.setOrderStatus(OrderStatus.SUCCESS);
+		return order;
 		
-		return  "order received with order id "+order.getOrderId()+" successfully";
 	}
 
 }

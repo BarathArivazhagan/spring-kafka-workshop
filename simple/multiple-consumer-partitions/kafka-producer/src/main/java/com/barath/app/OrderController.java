@@ -1,5 +1,7 @@
 package com.barath.app;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +14,7 @@ import com.barath.app.model.Order;
 import com.barath.app.serivce.OrderService;
 
 @RestController
-@RequestMapping(value="/orders", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping( produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class OrderController {
 	
 	private final OrderService orderService;
@@ -25,18 +27,20 @@ public class OrderController {
 
 
 
-	@PostMapping("/create")
+	@PostMapping("/place/order")
 	@ResponseStatus(code=HttpStatus.ACCEPTED)
 	public void placeOrder(@RequestBody Order order) {
 		
 		this.orderService.publishOrder(order);
 	}
 	
-	@PostMapping("/createWithReply")
+	@PostMapping("/place/orders")
 	@ResponseStatus(code=HttpStatus.ACCEPTED)
-	public void placeOrderWithReply(@RequestBody Order order) {
+	public void placeOrders(@RequestBody List<Order> orders) {
 		
-		this.orderService.publishOrderWithReplyFuture(order);
+		this.orderService.publishOrders(orders);
 	}
+	
+
 
 }

@@ -20,7 +20,7 @@ public class AppController {
 	private static final Logger logger=LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	@Autowired
-	private MessagePublisher messagePublisher;
+	private SimpleMessagePublisher messagePublisher;
 	
 	@GetMapping(value="/send")
 	public ResponseEntity<HttpStatus> sendMessage(@RequestParam("data") String data,@RequestParam("partition") Integer partition){

@@ -1,22 +1,62 @@
 {"properties": [
   {
-    "name": "kafka.topic.name",
+    "name": "kafka.simple.topic.name",
     "type": "java.lang.String",
-    "description": "A description for 'kafka.topic.name'"
+    "description": "A description for 'kafka.simple.topic.name'"
   },
   {
-    "name": "order.topic",
+    "name": "kafka.order.topic.name",
     "type": "java.lang.String",
-    "description": "A description for 'order.topic'"
+    "description": "A description for 'kafka.order.topic.name'"
   },
   {
-    "name": "order.request.topic",
+    "name": "kafka.simple.topic.replication-factor",
     "type": "java.lang.String",
-    "description": "A description for 'order.request.topic'"
+    "description": "A description for 'kafka.simple.topic.replication-factor'"
   },
   {
-    "name": "order.reply.topic",
+    "name": "kafka.order.request.topic.name",
     "type": "java.lang.String",
-    "description": "A description for 'order.reply.topic'"
+    "description": "A description for 'kafka.order.request.topic.name'"
+  },
+  {
+    "name": "kafka.order.reply.topic.name",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.reply.topic.name'"
+  },
+  {
+    "name": "kafka.order.reply.topic.replication-factor",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.reply.topic.replication-factor'"
+  },
+  {
+    "name": "kafka.order.request.topic.replication-factor",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.request.topic.replication-factor'"
+  },
+  {
+    "name": "kafka.order.topic.replication-factor",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.topic.replication-factor'"
+  },
+  {
+    "name": "kafka.simple.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.simple.topic.partitions'"
+  },
+  {
+    "name": "kafka.order.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.topic.partitions'"
+  },
+  {
+    "name": "kafka.order.request.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.request.topic.partitions'"
+  },
+  {
+    "name": "kafka.order.reply.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.reply.topic.partitions'"
   }
 ]}

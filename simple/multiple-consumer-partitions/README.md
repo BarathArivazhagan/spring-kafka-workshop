@@ -1,7 +1,7 @@
 # kafka-producer-with-multiple-consumer-partitions
 
 
-projects : 
+## Projects : 
 
 <table>
 
@@ -32,3 +32,10 @@ projects :
   </tr>
 
 </table>
+
+
+### Environment Variables :
+
+```
+SPRING_KAFKA_BOOTSTRAP_SERVERS
+```

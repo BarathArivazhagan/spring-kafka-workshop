@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "kafka.topic.name",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.topic.name'"
+  },
+  {
+    "name": "order.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.topic'"
+  },
+  {
+    "name": "order.request.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.request.topic'"
+  },
+  {
+    "name": "order.reply.topic",
+    "type": "java.lang.String",
+    "description": "A description for 'order.reply.topic'"
+  },
+  {
+    "name": "kafka.order.topic.name",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.topic.name'"
+  },
+  {
+    "name": "kafka.order.topic.replication-factor",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.topic.replication-factor'"
+  },
+  {
+    "name": "kafka.order.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.order.topic.partitions'"
+  },
+  {
+    "name": "kafka.simple.topic.name",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.simple.topic.name'"
+  },
+  {
+    "name": "kafka.simple.topic.replication-factor",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.simple.topic.replication-factor'"
+  },
+  {
+    "name": "kafka.simple.topic.partitions",
+    "type": "java.lang.String",
+    "description": "A description for 'kafka.simple.topic.partitions'"
+  }
+]}

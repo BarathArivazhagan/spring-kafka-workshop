@@ -15,6 +15,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -25,19 +26,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@EnableKafka
+//@EnableKafka
 @RestController
-public class SpringKaftaDemoApplication {
+public class Application {
 	
-	private static final Logger logger=LoggerFactory.getLogger(SpringKaftaDemoApplication.class);
+	private static final Logger logger=LoggerFactory.getLogger(Application.class);
 		
 	
-	@Autowired
-	private MesssageProducer producer;	
+	@Autowired(required=false)
+	private KafkaTemplate kafkaTemplate;	
 	
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringKaftaDemoApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 	
 	@GetMapping("/send")
@@ -45,9 +46,9 @@ public class SpringKaftaDemoApplication {
 		
 		Assert.notNull(message, "Message cannot be empty or null");
 		if(StringUtils.isEmpty(topic)){
-			producer.sendMessage(message);
+			kafkaTemplate.send("topic", message);
 		}else{
-			producer.sendMessage(topic, message);
+			kafkaTemplate.send(MessageBuilder.withPayload(message).build());
 		}
 				
 	}
@@ -56,7 +57,7 @@ public class SpringKaftaDemoApplication {
 	public void init(){
 		
 		System.out.println("Producing the message ");	
-		producer.sendMessage( "hello barath");	
+		//producer.sendMessage( "hello barath");	
 		
 	}
 	
@@ -64,14 +65,12 @@ public class SpringKaftaDemoApplication {
 	@Component	
 	protected static class MesssageProducer{
 		
-		private final ProducerFactory<Object,Object> producerFactory;
-		private final KafkaTemplate<Object,Object> kafkaTemplate;
+		@Autowired(required=false)
+		private KafkaTemplate<Object,Object> kafkaTemplate;
 		
 		
-		@Autowired
-		MesssageProducer(ProducerFactory<Object,Object> producerFactory,KafkaTemplate<Object,Object> kafkaTemplate){
-			this.producerFactory=producerFactory;
-			this.kafkaTemplate=kafkaTemplate;
+		MesssageProducer(){
+			
 		}
 		
 		protected void sendMessage(String message){
@@ -106,19 +105,10 @@ public class SpringKaftaDemoApplication {
 	@Component
 	protected static class MesssageConsumer{
 		
-		private final ConsumerFactory<Object,Object> consumerFactory;
-		private CountDownLatch latch = new CountDownLatch(1);
-
-		@Autowired
-		MesssageConsumer(ConsumerFactory<Object,Object> consumerFactory){
-			this.consumerFactory=consumerFactory;
-		}
-		
 		
 		@KafkaListener(topics = "${kafka.topics:test}")
 	    public void receiveMessage(String message) {
 	        logger.info("received message='{}'", message);
-	        latch.countDown();
 	    }
 	}
 }

@@ -68,8 +68,6 @@ public class Application {
 		private final ProducerFactory<Object,Object> producerFactory;
 		private final KafkaTemplate<Object,Object> kafkaTemplate;
 		
-		
-		@Autowired
 		MesssageProducer(@Null ProducerFactory<Object,Object> producerFactory, KafkaTemplate<Object,Object> kafkaTemplate){
 			this.producerFactory=producerFactory;
 			this.kafkaTemplate=kafkaTemplate;

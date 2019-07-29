@@ -2,7 +2,7 @@
 version: '3'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:5.3.0
+    image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -24,12 +24,6 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker1:9092'      
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker1:9092
-      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
   broker2:
     image: confluentinc/cp-kafka:latest
     hostname: broker2
@@ -44,12 +38,6 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker2:9093'      
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker2:9093
-      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
   broker3:
     image: confluentinc/cp-kafka:latest
     hostname: broker3
@@ -63,14 +51,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker3:9094'      
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker3:9094
-      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'true'
-      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-  
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0 
   control-center:
     image: confluentinc/cp-enterprise-control-center:5.3.0
     hostname: control-center
@@ -88,5 +69,4 @@ services:
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021

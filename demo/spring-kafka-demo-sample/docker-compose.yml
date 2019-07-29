@@ -1,0 +1,10 @@
+---
+version: '3'
+services:
+  zookeeper:
+    image: barathece91/spring-kafka-demo-sample
+    container_name: kafka-demo
+    network_mode: host
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+      
